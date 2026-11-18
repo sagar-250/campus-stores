@@ -309,6 +309,50 @@ body > main {
 #campus-stores textarea {
   resize: vertical;
 }
+#campus-stores .tick {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+#campus-stores .tick input {
+  width: 18px;
+  height: 18px;
+}
+#campus-stores .kitrow {
+  grid-template-columns: minmax(0, 1fr);
+}
+#campus-stores .kitrow .form {
+  display: none;
+}
+#campus-stores form:has(.tick input:checked) .kitrow:not(:has(.tick input:checked)) .form {
+  display: grid;
+}
+#campus-stores .kitrow .got {
+  display: none;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+  max-width: 260px;
+}
+#campus-stores .kitrow:has(.tick input:checked) .got {
+  display: block;
+}
+#campus-stores .got select {
+  width: 100%;
+  font-weight: 400;
+}
+#campus-stores [aria-invalid="true"] {
+  border-color: var(--mark);
+  box-shadow: 0 0 0 1px var(--mark);
+}
+#campus-stores .tag.late {
+  background: var(--memo);
+  color: var(--memotxt);
+}
+#campus-stores [data-action="undo"] {
+  margin-left: 8px;
+  border-color: var(--sel);
+}
 #campus-stores .statusbar {
   background: var(--desk);
   border-top: 1px solid var(--line);
@@ -365,7 +409,8 @@ body > main {
 }
 @media (pointer: coarse) {
   #campus-stores button,
-  #campus-stores select {
+  #campus-stores select,
+  #campus-stores .tick {
     min-height: 44px;
   }
 }
