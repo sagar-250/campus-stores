@@ -320,6 +320,35 @@ body > main {
 }
 #campus-stores .kitrow {
   grid-template-columns: minmax(0, 1fr);
+  border: 1px solid var(--line);
+  border-left-width: 4px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 8px;
+}
+#campus-stores .kitrow:has(.tick input:checked) {
+  background: var(--ok);
+  border-color: var(--oktxt);
+}
+#campus-stores form:has(.tick input:checked) .kitrow:not(:has(.tick input:checked)) {
+  background: var(--memo);
+  border-color: var(--memotxt);
+}
+#campus-stores .kitrow .tick::after {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--paper);
+}
+#campus-stores .kitrow:has(.tick input:checked) .tick::after {
+  content: "Back";
+  color: var(--oktxt);
+}
+#campus-stores form:has(.tick input:checked) .kitrow:not(:has(.tick input:checked)) .tick::after {
+  content: "Still out";
+  color: var(--memotxt);
 }
 #campus-stores .kitrow .form {
   display: none;
@@ -349,9 +378,24 @@ body > main {
   background: var(--memo);
   color: var(--memotxt);
 }
-#campus-stores [data-action="undo"] {
-  margin-left: 8px;
-  border-color: var(--sel);
+#campus-stores .done {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--ok);
+  color: var(--oktxt);
+  border-left: 4px solid var(--oktxt);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+#campus-stores .done button {
+  flex-shrink: 0;
+}
+#campus-stores [data-kit] > button {
+  margin-top: 12px;
 }
 #campus-stores .statusbar {
   background: var(--desk);

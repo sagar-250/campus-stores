@@ -340,6 +340,8 @@
         "</form>"
       );
     }
+    if (s.undo)
+      html += '<div class="done"><span>✓ ' + esc(s.notice) + "</span>" + btn("Undo return", "undo") + "</div>";
     html +=
       '<div class="buttons">' +
       ["Outstanding", "All slips"]
@@ -454,7 +456,6 @@
     q("[data-page]").innerHTML = screens[s.tab]();
     if (q("[data-filter]")) q("[data-filter]").value = s.filter;
     q("[data-status]").textContent = s.notice;
-    q('[data-action="undo"]').hidden = !s.undo;
     if (q("[data-kit]")) tally(q("[data-kit]"));
   }
   function commit(msg) {

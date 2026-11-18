@@ -1,12 +1,32 @@
 # Campus Stores
 
-my change is in app.js, a bit of styles.css and one undo button in index.html, plus tests in tests/.  open index.html, issue the film society kit to kabir in the loan register, move to 7:30 and hit record return on the projector.
+## Submission summary
+
+**Kept:** the issue form and its guardrails. Units in repair are hidden, and equipment outside the approved request or beyond the approved quantity is blocked.
+
+**Changed:** returns now work on the whole kit instead of one slip at a time.
+
+What was done:
+
+- **Kit return:** Record return opens every open slip on that request, with the clicked unit already ticked.
+- **Partial returns:** anything not ticked needs who has it and when it is coming back. This shows on the register row and is written to the desk book as a handover note linked to the slip.
+- **Wrong unit check:** for lookalike units (AD-12 / AD-15) staff confirm the label. A mismatch is flagged and noted, and the missing unit is marked Missing so it cannot be issued.
+- **Clear feedback:** ticked units turn green and units still out turn amber. The save button previews the result, and a banner confirms the save with Undo.
+- **Morning shift:** register rows lead with the item, show who holds it and mark late items.
+- **Error handling:** validation moves focus to the missing field, return times that have passed are not offered, and stale saved data is ignored safely.
+- **Tests:** 41 Playwright tests cover the full shift and its edge cases. Run `npm install`, `npx playwright install chromium`, then `npm test`.
+
+**Try it:** open `index.html`, issue the Film Society kit (PR-04, SP-02, AD-12) to Kabir in the Loan register, move to 7:30 and press Record return on the projector.
+
+**Files changed:** `app.js`, `styles.css`, `tests/`, `package.json`, `playwright.config.js`.
+
+## The decision in my words
 
 what the product does well is the issue form. at pickup PR-06 is in repair so it just never shows up, and the form wont let you hand out stuff thats not on the approved request or a second unit of the same thing.  kabir cant leave with a dead projector 15 min before the film and i didnt have to think about it. didnt touch any of that.
 
 what i would change is the return. at 7:30 kabir puts the projector and speaker on the counter and says leela has the adapter till tomorow. the old app closed one slip at a time and had no idea anything was still out or who had it. the only way to tell the morning shift was a free text note you had to remember to write, linked to nothing, so next morning your matching prose to RQ-214 by hand while leela waits.
 
-so now the return works on the whole kit, the way kabir actually says it. pickup is the same. at 7:30 record return on the projector opens the whole film society kit with the projector already ticked and asks "What’s on the counter? Tick it and check the label."  you tick the speaker. the adapter is the only thing left so its the only thing asking "Who has it" and "Bringing it back", pick leela and sat 9 am, save. forget one and it puts you right on the empty box instead of failing quietly at the bottom. the status bar reads it back, "Back: HDMI projector, Portable speaker. Still out: USB-C → HDMI adapter with Leela Das till Sat 9 am." with an undo return button next to it incase you ticked the wrong thing, and the desk book gets the note written for you: "Film Society’s USB-C → HDMI adapter (AD-12) is still out. Leela Das has it, back Sat 9 am. Slip L-404 stays open."
+so now the return works on the whole kit, the way kabir actually says it. pickup is the same. at 7:30 record return on the projector opens the whole film society kit with the projector already ticked and asks "What’s on the counter? Tick it and check the label."  you tick the speaker. the adapter is the only thing left so its the only thing asking "Who has it" and "Bringing it back", pick leela and sat 9 am, save. forget one and it puts you right on the empty box instead of failing quietly at the bottom. ticked rows go green and whats still out goes amber, the save button says "2 back, 1 still out" before you even press it, and after saving a green banner on top reads it back, "Back: HDMI projector, Portable speaker. Still out: USB-C → HDMI adapter with Leela Das till Sat 9 am." with an undo return button right there incase you ticked the wrong thing, and the desk book gets the note written for you: "Film Society’s USB-C → HDMI adapter (AD-12) is still out. Leela Das has it, back Sat 9 am. Slip L-404 stays open."
 
 saturday 9 am the new person doesnt need any of that story.  the row says "Film Society · Leela Das has it, back Sat 9 am · issued to Kabir Sen, due Fri 8 pm" with a small Late tag. leela walks in, her name is right there, record return, already ticked, save. two clicks. every row also shows item type and club now becuase RQ-214 alone means nothing to someone who just walked in.
 
