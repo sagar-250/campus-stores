@@ -284,10 +284,11 @@
     if (k) {
       const r = getReq(k.req);
       const soon = dues.filter((d) => hrs[d] >= now[s.phase]);
-      const pick = (name, list, cur) =>
+      const pick = (name, list, cur, bare) =>
         '<select name="' +
         name +
-        '"><option value="">Select…</option>' +
+        '">' +
+        (bare ? "" : '<option value="">Select…</option>') +
         list
           .map(
             (v) =>
@@ -322,6 +323,7 @@
                     "got" + l.num,
                     alt.map((x) => x.id),
                     l.asset,
+                    true,
                   ) +
                   "</label>"
                 : "") +
@@ -364,8 +366,8 @@
           ? l.holder + " has it, back " + l.exp + " · issued to " + l.who + ", due " + l.due
           : l.who + " · Due " + l.due + (l.got ? " · came back as " + l.got : "");
       html += row(
-        "L-" + l.num + " · " + l.asset + " · " + getAsset(l.asset).type,
-        getReq(l.req).club + " · " + sub,
+        getAsset(l.asset).type + " · " + l.asset,
+        "L-" + l.num + " · " + getReq(l.req).club + " · " + sub,
         l.back
           ? badge("Returned")
           : (late(l) ? '<span class="tag late">Late</span> ' : "") +
@@ -419,6 +421,14 @@
     "Loan register": register,
     "Desk book": deskbook,
   };
+  function tally(f) {
+    const all = [...f.querySelectorAll(".tick input")];
+    const n = all.filter((x) => x.checked).length;
+    const left = all.length - n;
+    f.querySelector("[type=submit]").textContent = n
+      ? "Save return · " + n + " back" + (left ? ", " + left + " still out" : "")
+      : "Save return";
+  }
   function paint() {
     const phase = shifts[s.phase];
     q("[data-clock]").textContent = phase.time;
@@ -445,6 +455,7 @@
     if (q("[data-filter]")) q("[data-filter]").value = s.filter;
     q("[data-status]").textContent = s.notice;
     q('[data-action="undo"]').hidden = !s.undo;
+    if (q("[data-kit]")) tally(q("[data-kit]"));
   }
   function commit(msg) {
     if (msg) s.notice = msg;
@@ -516,6 +527,8 @@
   });
   root.addEventListener("change", (e) => {
     e.target.removeAttribute("aria-invalid");
+    const f = e.target.closest("[data-kit]");
+    if (f) tally(f);
     if (e.target.matches("[data-filter]")) {
       s.filter = e.target.value;
       commit();

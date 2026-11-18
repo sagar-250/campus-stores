@@ -20,6 +20,18 @@ test.describe("friday 7:30, the kit comes back in pieces", () => {
     await expect(t.box(page, 403)).toBeFocused();
   });
 
+  test("the save button says what will happen as you tick", async ({ page }) => {
+    const btn = page.locator("[data-kit] [type=submit]");
+    await t.ret(page, 402);
+    await expect(btn).toHaveText("Save return · 1 back, 2 still out");
+    await t.box(page, 403).check();
+    await expect(btn).toHaveText("Save return · 2 back, 1 still out");
+    await t.box(page, 404).check();
+    await expect(btn).toHaveText("Save return · 3 back");
+    for (const n of [402, 403, 404]) await t.box(page, n).uncheck();
+    await expect(btn).toHaveText("Save return");
+  });
+
   test("only that club's kit opens", async ({ page }) => {
     await t.ret(page, 402);
     await expect(page.locator(".kitrow")).toHaveCount(3);
@@ -244,7 +256,7 @@ test.describe("the wrong unit comes back", () => {
     await expect(t.got(page, 404)).toBeVisible();
     await expect(t.got(page, 404)).toHaveValue("AD-12");
     const opts = await t.got(page, 404).locator("option").allInnerTexts();
-    expect(opts).toEqual(["Select…", "AD-12", "AD-15"]);
+    expect(opts).toEqual(["AD-12", "AD-15"]);
     await t.box(page, 404).uncheck();
     await expect(t.got(page, 404)).toBeHidden();
   });
