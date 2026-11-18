@@ -107,6 +107,7 @@
     ],
     notes: [],
     gone: [],
+    extra: [],
     kit: 0,
     undo: "",
     editing: false,
@@ -122,6 +123,11 @@
   const hrs = { "Fri 8 pm": 20, "Sat 9 am": 33, "Sat 10 am": 34, "Sat noon": 36 };
   const now = [15.75, 19.5, 33];
   const late = (l) => !l.back && now[s.phase] > hrs[l.due];
+  const names = () => people.concat(s.extra.map((p) => p.name));
+  const tag = (n) => {
+    const p = s.extra.find((x) => x.name === n);
+    return p ? n + " (" + p.roll + ")" : n;
+  };
   const like = (l) =>
     assets.filter(
       (a) => a.type === getAsset(l.asset).type && !a.repair && (a.id === l.asset || !out(a.id)),
@@ -270,13 +276,17 @@
         select(
           "Collected by",
           "who",
-          people.map((p) => [p, p]),
+          names()
+            .map((p) => [p, p])
+            .concat([["+", "Someone else…"]]),
         ) +
         select(
           "Return by",
           "due",
           dues.map((d) => [d, d]),
         ) +
+        '<div class="newbie full"><label><span>Their name</span><input name="nm" maxlength="40" autocomplete="off" /></label>' +
+        '<label><span>Roll number</span><input name="roll" maxlength="15" autocomplete="off" placeholder="e.g. CE23B108" /></label></div>' +
         '</div><button type="submit" class="primary">Save issue slip</button></form>'
       );
     }
@@ -328,7 +338,7 @@
                   "</label>"
                 : "") +
               '<div class="form"><label><span>Who has it</span>' +
-              pick("who" + l.num, people, l.holder) +
+              pick("who" + l.num, names(), l.holder) +
               "</label><label><span>Bringing it back</span>" +
               pick("due" + l.num, soon, l.exp) +
               "</label></div></div></div>"
@@ -365,8 +375,8 @@
     for (const l of shown) {
       const sub =
         l.holder && !l.back
-          ? l.holder + " has it, back " + l.exp + " · issued to " + l.who + ", due " + l.due
-          : l.who + " · Due " + l.due + (l.got ? " · came back as " + l.got : "");
+          ? tag(l.holder) + " has it, back " + l.exp + " · issued to " + tag(l.who) + ", due " + l.due
+          : tag(l.who) + " · Due " + l.due + (l.got ? " · came back as " + l.got : "");
       html += row(
         getAsset(l.asset).type + " · " + l.asset,
         "L-" + l.num + " · " + getReq(l.req).club + " · " + sub,
@@ -436,6 +446,20 @@
     q("[data-clock]").textContent = phase.time;
     q("[data-shift-title]").textContent = phase.title;
     q("[data-shift]").textContent = phase.text;
+    q("[data-steps]").innerHTML = ["Pickup", "Return", "Morning"]
+      .map(
+        (x, i) =>
+          '<li class="' +
+          (i < s.phase ? "past" : i === s.phase ? "now" : "") +
+          '"' +
+          (i === s.phase ? ' aria-current="step"' : "") +
+          "><span>" +
+          (i < s.phase ? "✓" : i + 1) +
+          "</span>" +
+          x +
+          "</li>",
+      )
+      .join("");
     const advance = q('[data-action="advance"]');
     advance.hidden = !phase.next;
     advance.textContent = phase.next || "";
@@ -554,10 +578,10 @@
       if (!ins.length)
         return say("Nothing ticked yet. Tick what’s on the counter.", f.querySelector(".tick input"));
       const bad = miss.find(
-        (l) => !people.includes(form.get("who" + l.num)) || !dues.includes(form.get("due" + l.num)),
+        (l) => !names().includes(form.get("who" + l.num)) || !dues.includes(form.get("due" + l.num)),
       );
       if (bad) {
-        const key = people.includes(form.get("who" + bad.num)) ? "due" : "who";
+        const key = names().includes(form.get("who" + bad.num)) ? "due" : "who";
         const el = f.querySelector('[name="' + key + bad.num + '"]');
         el.setAttribute("aria-invalid", "true");
         return say(
@@ -628,7 +652,23 @@
     );
     const unit = getAsset(asset),
       r = getReq(req);
-    if (!r || !unit || unit.repair || out(asset) || s.gone.includes(asset) || !people.includes(who))
+    let name = who;
+    let roll = "";
+    if (who === "+") {
+      name = String(form.get("nm") || "").trim().replace(/\s+/g, " ");
+      roll = String(form.get("roll") || "").trim().toUpperCase();
+      const miss = !name ? "nm" : !/^[A-Z0-9-]{3,15}$/.test(roll) ? "roll" : "";
+      if (miss) {
+        const el = f.querySelector('[name="' + miss + '"]');
+        el.setAttribute("aria-invalid", "true");
+        el.focus();
+        q("[data-status]").textContent =
+          miss === "nm" ? "Type the name of the person collecting." : "Add their roll number, like CE23B108.";
+        return;
+      }
+      name = names().find((n) => n.toLowerCase() === name.toLowerCase()) || name;
+    }
+    if (!r || !unit || unit.repair || out(asset) || s.gone.includes(asset) || (who !== "+" && !names().includes(who)))
       return;
     if (!r.items.includes(unit.type)) {
       q("[data-status]").textContent =
@@ -645,10 +685,11 @@
       return;
     }
     const num = Math.max(...s.loans.map((l) => l.num)) + 1;
-    s.loans.push({ num, req, asset, who, due, back: false });
+    if (roll && !names().includes(name)) s.extra.push({ name, roll });
+    s.loans.push({ num, req, asset, who: name, due, back: false });
     s.editing = false;
     s.undo = "";
-    commit("Issued " + asset + " to " + who + " on slip L-" + num + ".");
+    commit("Issued " + asset + " to " + tag(name) + " on slip L-" + num + ".");
   });
   function restore(d) {
     if (
@@ -674,6 +715,9 @@
       ...d,
       kit: d.loans.some((l) => l.num === d.kit && !l.back) ? d.kit : 0,
       undo: "",
+      extra: Array.isArray(d.extra)
+        ? d.extra.filter((p) => p && typeof p.name === "string" && p.name.trim() && typeof p.roll === "string")
+        : [],
       gone: Array.isArray(d.gone) ? d.gone.filter((x) => getAsset(x)) : [],
       loans: d.loans.map((l) => ({ ...l })),
       notes: d.notes.map((n) => ({ ...n })),

@@ -21,6 +21,17 @@ test("the whole film society job, pickup to saturday", async ({ page }) => {
   expect(errs).toEqual([]);
 });
 
+test("the progress steps follow the shift", async ({ page }) => {
+  const now = page.locator('[data-steps] [aria-current="step"]');
+  await t.open(page);
+  await expect(now).toHaveText("1Pickup");
+  await t.next(page);
+  await expect(now).toHaveText("2Return");
+  await expect(page.locator("[data-steps] .past")).toHaveText("✓Pickup");
+  await t.next(page);
+  await expect(now).toHaveText("3Morning");
+});
+
 test("pickup guardrails still hold", async ({ page }) => {
   await t.open(page);
   await page.getByRole("button", { name: "New issue slip" }).click();

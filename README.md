@@ -8,17 +8,19 @@
 
 What was done:
 
+- **Anyone can collect:** "Collected by" is no longer limited to a fixed list. Choosing "Someone else…" asks for their name and roll number, so a walk-up student is never turned away. They are remembered for later slips and returns, and their roll number shows next to their name.
 - **Kit return:** Record return opens every open slip on that request, with the clicked unit already ticked.
 - **Partial returns:** anything not ticked needs who has it and when it is coming back. This shows on the register row and is written to the desk book as a handover note linked to the slip.
 - **Wrong unit check:** for lookalike units (AD-12 / AD-15) staff confirm the label. A mismatch is flagged and noted, and the missing unit is marked Missing so it cannot be issued.
 - **Clear feedback:** ticked units turn green and units still out turn amber. The save button previews the result, and a banner confirms the save with Undo.
 - **Morning shift:** register rows lead with the item, show who holds it and mark late items.
 - **Error handling:** validation moves focus to the missing field, return times that have passed are not offered, and stale saved data is ignored safely.
-- **Tests:** 41 Playwright tests cover the full shift and its edge cases. Run `npm install`, `npx playwright install chromium`, then `npm test`.
+- **Visual refresh:** a clean, light layout with a quiet sidebar and a Pickup › Return › Morning progress line. Colour is used only for state: green for back, amber for out or late. It works at phone width.
+- **Tests:** 49 Playwright tests cover the full shift and its edge cases. Run `npm install`, `npx playwright install chromium`, then `npm test`.
 
 **Try it:** open `index.html`, issue the Film Society kit (PR-04, SP-02, AD-12) to Kabir in the Loan register, move to 7:30 and press Record return on the projector.
 
-**Files changed:** `app.js`, `styles.css`, `tests/`, `package.json`, `playwright.config.js`.
+**Files changed:** `app.js`, `styles.css`, `tests/`, `package.json`, `playwright.config.js` (`index.html` gets one line for the progress steps).
 
 ## The decision in my words
 
@@ -35,7 +37,7 @@ what i was going for is less a feature and more how it feels at the counter. it 
 
 one thing id watch at a real counter: at 9 am when leela walks in, does the person who just started close her slip straight away without asking anyone or digging through the desk book. if yes it helped,  if they still ask around it didnt.
 
-tests are playwright, they open index.html straight from disk. npm install, npx playwright install chromium, npm test.  40 of them, mostly awkward stuff: wrong adapter back, nothing ticked, forgetting who has it, a time that already passed, undo, broken saved data, storage blocked, html in a note, phone width, keyboard only. the guardrails i kept have one too.
+tests are playwright, they open index.html straight from disk. npm install, npx playwright install chromium, npm test.  49 of them, mostly awkward stuff: wrong adapter back, nothing ticked, forgetting who has it, a time that already passed, undo, broken saved data, storage blocked, html in a note, phone width, keyboard only. the guardrails i kept have one too.
 
 the scene literally says close the loan for the right item, and AD-12 and AD-15 look the same in the same bin. so when a unit has a lookalike, ticking it shows "Label on the unit says" set to the slip's unit. if leela hands over AD-15 you pick that, the slip still closes but its flagged, "Slip L-404 said AD-12 but AD-15 came back, AD-12 marked missing.", the desk book gets a note to go find AD-12 and inventory shows it Missing so nobody hands it out. kept on record, not quietly fixed.
 

@@ -1,13 +1,13 @@
 :root {
-  color-scheme: light dark;
-  background: light-dark(#f0f2f1, #191e21);
+  color-scheme: light;
+  background: #eef1f3;
 }
 body {
   margin: 0;
-  padding: clamp(10px, 3vw, 44px) clamp(6px, 3vw, 36px);
+  padding: clamp(10px, 3vw, 40px) clamp(6px, 3vw, 32px);
 }
 body > main {
-  max-width: 1060px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 .icon-library {
@@ -24,28 +24,35 @@ body > main {
 }
 
 #campus-stores {
-  color-scheme: light dark;
-  --ink: light-dark(#202c35, #ecf0f0);
-  --quiet: light-dark(#526370, #b9c5cb);
-  --paper: light-dark(#fff, #232a30);
-  --desk: light-dark(#f3f5f5, #1d2328);
-  --nav: light-dark(#eaf0f1, #29333b);
-  --sel: light-dark(#233e4c, #c5dce4);
-  --inv: light-dark(#fff, #172b34);
-  --line: light-dark(#d2dcdf, #475158);
-  --memo: light-dark(#fff3d8, #3d3426);
-  --memotxt: light-dark(#65491e, #ead4a5);
-  --mark: light-dark(#bd502f, #f2a585);
-  --ok: light-dark(#e3f1e8, #2d4838);
-  --oktxt: light-dark(#25523d, #bedac8);
+  color-scheme: light;
+  --ink: #18242d;
+  --quiet: #5d6b75;
+  --faint: #8794a0;
+  --paper: #ffffff;
+  --desk: #f6f8f9;
+  --nav: #f3f5f7;
+  --sel: #1f4e79;
+  --inv: #ffffff;
+  --line: #dde3e8;
+  --memo: #fdf6e7;
+  --memotxt: #7a5512;
+  --memoline: #ecd9ae;
+  --mark: #c2410c;
+  --ok: #edf7f1;
+  --oktxt: #1e6b47;
+  --okline: #bfe0cc;
+  --r: 8px;
   background: var(--paper);
   color: var(--ink);
   font:
-    14px/1.48 "Inter",
-    "Arial",
+    14px/1.5 "Inter",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
     sans-serif;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
   container-type: inline-size;
 }
@@ -62,26 +69,29 @@ body > main {
   margin: 0;
 }
 #campus-stores h1 {
-  font:
-    600 clamp(24px, 4cqw, 33px)/1.13 "Archivo",
-    system-ui,
-    sans-serif;
-  letter-spacing: -0.05em;
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
 }
 #campus-stores h2 {
-  font-size: 20px;
-  letter-spacing: -0.03em;
+  font-size: 19px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 #campus-stores h3 {
   font-size: 15px;
+  font-weight: 600;
 }
 #campus-stores .muted,
 #campus-stores small {
   color: var(--quiet);
 }
 #campus-stores small {
-  font-size: 12px;
+  font-size: 12.5px;
 }
+
 #campus-stores .examstrip {
   display: flex;
   justify-content: space-between;
@@ -90,79 +100,139 @@ body > main {
   flex-wrap: wrap;
   background: var(--desk);
   border-bottom: 1px solid var(--line);
-  padding: 9px 18px;
+  padding: 7px 24px;
   color: var(--quiet);
-  font-size: 13px;
+  font-size: 12.5px;
 }
 #campus-stores details[open] {
   width: 100%;
 }
 #campus-stores summary {
-  font-weight: 650;
+  font-weight: 600;
   color: var(--sel);
   cursor: pointer;
 }
 #campus-stores .briefcopy {
   color: var(--ink);
-  max-width: 79ch;
-  padding: 12px 0 5px;
+  max-width: 72ch;
+  padding: 12px 0 6px;
   display: grid;
   gap: 8px;
 }
+
 #campus-stores .mast,
 #campus-stores .brandblock,
-#campus-stores .shift,
 #campus-stores .sectionhead,
 #campus-stores .statusbar,
 #campus-stores .buttons {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 #campus-stores .mast {
-  padding: 17px 20px;
+  padding: 16px 24px;
   justify-content: space-between;
   flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
 }
 #campus-stores .brandmark {
   background: var(--mark);
-  color: var(--inv);
-  width: 40px;
-  height: 40px;
+  color: #fff;
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
-  border-radius: 9px;
+  border-radius: var(--r);
 }
 #campus-stores .brandmark svg {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
 }
 #campus-stores .clock {
   display: grid;
   text-align: right;
 }
+#campus-stores .clock small {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
 #campus-stores .clock strong {
+  font-size: 15px;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
+
 #campus-stores .shift {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 20px;
   background: var(--memo);
   color: var(--memotxt);
-  padding: 12px 19px;
-  justify-content: space-between;
-  border-block: 1px solid var(--line);
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--memoline);
 }
 #campus-stores .shift div {
-  max-width: 67ch;
+  max-width: 70ch;
 }
 #campus-stores .shift b {
-  font-size: 13px;
+  font-size: 14.5px;
+  display: block;
+  margin-bottom: 2px;
+  color: var(--ink);
+}
+#campus-stores .shift p {
+  color: var(--memotxt);
 }
 #campus-stores .shift button {
-  background: transparent;
-  border-color: var(--memotxt);
+  background: var(--paper);
+  border-color: var(--memoline);
   color: var(--memotxt);
   flex-shrink: 0;
 }
+#campus-stores .shift button:hover {
+  border-color: var(--memotxt);
+}
+#campus-stores .steps {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--faint);
+}
+#campus-stores .steps li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+#campus-stores .steps li + li::before {
+  content: "›";
+  margin: 0 10px;
+  color: var(--memoline);
+  font-size: 15px;
+}
+#campus-stores .steps span {
+  font-variant-numeric: tabular-nums;
+}
+#campus-stores .steps .past {
+  color: var(--quiet);
+}
+#campus-stores .steps .past span {
+  color: var(--oktxt);
+}
+#campus-stores .steps .now {
+  color: var(--ink);
+  font-weight: 650;
+}
+
 #campus-stores button,
 #campus-stores select,
 #campus-stores input,
@@ -173,50 +243,68 @@ body > main {
   border-radius: 6px;
   background: var(--paper);
   min-width: 0;
-  padding: 7px 9px;
+  padding: 7px 12px;
 }
 #campus-stores button {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 550;
   cursor: pointer;
 }
 #campus-stores button:hover {
-  border-color: var(--sel);
+  border-color: var(--faint);
+  background: var(--desk);
 }
 #campus-stores .primary {
   background: var(--sel);
   color: var(--inv);
   border-color: var(--sel);
 }
+#campus-stores .primary:hover {
+  background: #183f63;
+  border-color: #183f63;
+}
 #campus-stores :is(button, input, textarea, select, summary):focus-visible {
-  outline: 3px solid var(--mark);
+  outline: 2px solid var(--sel);
   outline-offset: 2px;
 }
+
 #campus-stores .shell {
   display: grid;
-  grid-template-columns: 155px minmax(0, 1fr);
-  min-height: 315px;
+  grid-template-columns: 196px minmax(0, 1fr);
+  min-height: 380px;
 }
 #campus-stores nav {
   background: var(--nav);
   border-right: 1px solid var(--line);
-  padding: 12px 8px;
+  padding: 14px 10px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 #campus-stores nav button {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   text-align: left;
   border: 1px solid transparent;
   background: transparent;
+  color: var(--quiet);
   font-weight: 500;
+  padding: 8px 10px;
+}
+#campus-stores nav button:hover {
+  background: #e9edf0;
+  color: var(--ink);
+  border-color: transparent;
 }
 #campus-stores nav button[aria-pressed="true"] {
-  background: var(--sel);
-  color: var(--inv);
+  background: var(--paper);
+  border-color: var(--line);
+  color: var(--ink);
+  font-weight: 600;
+}
+#campus-stores nav button[aria-pressed="true"] svg {
+  color: var(--sel);
 }
 #campus-stores nav svg {
   width: 16px;
@@ -224,7 +312,7 @@ body > main {
   flex-shrink: 0;
 }
 #campus-stores .page {
-  padding: 17px 17px 20px;
+  padding: 22px 26px 26px;
   min-width: 0;
 }
 #campus-stores .sectionhead,
@@ -233,19 +321,26 @@ body > main {
   flex-wrap: wrap;
 }
 #campus-stores .sectionhead {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 #campus-stores .sectionhead small {
   margin-top: 2px;
   display: block;
 }
+
 #campus-stores .row {
   border-top: 1px solid var(--line);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 8px;
-  padding: 9px 0;
+  gap: 10px;
+  padding: 11px 0;
+}
+#campus-stores .row strong {
+  font-weight: 600;
+}
+#campus-stores .row small {
+  margin-top: 1px;
 }
 #campus-stores .row small,
 #campus-stores label span {
@@ -255,41 +350,69 @@ body > main {
   background: var(--desk);
   color: var(--quiet);
   font-size: 12px;
-  padding: 3px 7px;
-  border-radius: 5px;
+  font-weight: 550;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
   display: inline-block;
 }
 #campus-stores .good {
   background: var(--ok);
   color: var(--oktxt);
+  border-color: var(--okline);
+}
+#campus-stores .tag.late {
+  background: var(--memo);
+  color: var(--memotxt);
+  border-color: var(--memoline);
 }
 #campus-stores .record {
   margin-top: 14px;
-  padding: 12px 13px;
+  padding: 14px 16px;
   background: var(--desk);
-  border-left: 3px solid var(--sel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
 }
 #campus-stores .record p {
-  margin-top: 5px;
+  margin-top: 6px;
+}
+#campus-stores .record ul {
+  margin: 6px 0;
+  padding-left: 20px;
 }
 #campus-stores .buttons {
   flex-wrap: wrap;
-  margin: 10px 0;
+  margin: 12px 0;
+  gap: 0;
+}
+#campus-stores .buttons button[aria-pressed] {
+  border-radius: 0;
+  margin-left: -1px;
+}
+#campus-stores .buttons button[aria-pressed]:first-child {
+  border-radius: 6px 0 0 6px;
+  margin-left: 0;
+}
+#campus-stores .buttons button[aria-pressed]:last-child {
+  border-radius: 0 6px 6px 0;
 }
 #campus-stores .buttons button[aria-pressed="true"] {
-  background: var(--sel);
-  color: var(--inv);
+  background: var(--desk);
+  color: var(--ink);
+  font-weight: 650;
+  box-shadow: inset 0 -2px 0 var(--sel);
 }
 #campus-stores .buttons label {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   align-items: center;
 }
+
 #campus-stores .form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 10px 0;
+  gap: 12px;
+  margin: 12px 0;
 }
 #campus-stores .form label {
   font-size: 13px;
@@ -297,7 +420,7 @@ body > main {
   min-width: 0;
 }
 #campus-stores .form label span {
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 #campus-stores .form :is(select, input, textarea) {
   width: 100%;
@@ -306,41 +429,53 @@ body > main {
 #campus-stores .full {
   grid-column: 1/-1;
 }
+#campus-stores .newbie {
+  display: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 12px;
+  background: var(--desk);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+#campus-stores form:has(select[name="who"] option[value="+"]:checked) .newbie {
+  display: grid;
+}
 #campus-stores textarea {
   resize: vertical;
 }
+
 #campus-stores .tick {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
+  cursor: pointer;
 }
 #campus-stores .tick input {
   width: 18px;
   height: 18px;
+  accent-color: var(--oktxt);
 }
 #campus-stores .kitrow {
   grid-template-columns: minmax(0, 1fr);
   border: 1px solid var(--line);
-  border-left-width: 4px;
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-top: 8px;
+  border-radius: var(--r);
+  padding: 12px 14px;
+  margin: 8px 0 0;
 }
 #campus-stores .kitrow:has(.tick input:checked) {
   background: var(--ok);
-  border-color: var(--oktxt);
+  border-color: var(--okline);
 }
 #campus-stores form:has(.tick input:checked) .kitrow:not(:has(.tick input:checked)) {
   background: var(--memo);
-  border-color: var(--memotxt);
+  border-color: var(--memoline);
 }
 #campus-stores .kitrow .tick::after {
   margin-left: auto;
   font-size: 12px;
   font-weight: 600;
-  padding: 2px 9px;
-  border-radius: 999px;
-  background: var(--paper);
+  white-space: nowrap;
 }
 #campus-stores .kitrow:has(.tick input:checked) .tick::after {
   content: "Back";
@@ -360,7 +495,7 @@ body > main {
   display: none;
   font-size: 13px;
   font-weight: 600;
-  margin-top: 8px;
+  margin-top: 10px;
   max-width: 260px;
 }
 #campus-stores .kitrow:has(.tick input:checked) .got {
@@ -372,12 +507,12 @@ body > main {
 }
 #campus-stores [aria-invalid="true"] {
   border-color: var(--mark);
-  box-shadow: 0 0 0 1px var(--mark);
+  box-shadow: 0 0 0 3px rgb(194 65 12 / 15%);
 }
-#campus-stores .tag.late {
-  background: var(--memo);
-  color: var(--memotxt);
+#campus-stores [data-kit] > button {
+  margin-top: 16px;
 }
+
 #campus-stores .done {
   display: flex;
   align-items: center;
@@ -385,32 +520,30 @@ body > main {
   gap: 12px;
   background: var(--ok);
   color: var(--oktxt);
-  border-left: 4px solid var(--oktxt);
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-bottom: 12px;
-  font-weight: 600;
+  border: 1px solid var(--okline);
+  border-radius: var(--r);
+  padding: 10px 12px 10px 14px;
+  margin-bottom: 14px;
+  font-weight: 550;
 }
 #campus-stores .done button {
   flex-shrink: 0;
 }
-#campus-stores [data-kit] > button {
-  margin-top: 12px;
-}
+
 #campus-stores .statusbar {
   background: var(--desk);
   border-top: 1px solid var(--line);
-  padding: 8px 16px;
+  padding: 9px 24px;
   color: var(--quiet);
-  font-size: 12px;
+  font-size: 12.5px;
 }
 #campus-stores .statusbar span {
   flex: 1 1 160px;
 }
 #campus-stores .statusbar button {
-  font-size: 12px;
-  background: transparent;
+  font-size: 12.5px;
 }
+
 @container (max-width:650px) {
   #campus-stores .shell {
     grid-template-columns: minmax(0, 1fr);
@@ -420,35 +553,43 @@ body > main {
     border-bottom: 1px solid var(--line);
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 7px;
+    padding: 8px;
   }
   #campus-stores nav button {
-    gap: 4px;
-    padding: 5px 7px;
+    gap: 6px;
+    padding: 6px 9px;
   }
   #campus-stores .shift {
-    flex-wrap: wrap;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px 14px;
+  }
+  #campus-stores .shift button {
+    justify-self: start;
   }
   #campus-stores .page {
-    padding: 14px 12px;
+    padding: 16px 14px;
   }
   #campus-stores .mast {
-    padding: 12px;
+    padding: 12px 14px;
   }
   #campus-stores .examstrip,
-  #campus-stores .shift {
-    padding: 9px 12px;
+  #campus-stores .statusbar {
+    padding-inline: 14px;
   }
 }
 @container (max-width:420px) {
-  #campus-stores .form {
+  #campus-stores .form,
+  #campus-stores .newbie {
     grid-template-columns: minmax(0, 1fr);
   }
   #campus-stores .brandmark {
     display: none;
   }
   #campus-stores .row {
-    gap: 5px;
+    gap: 6px;
+  }
+  #campus-stores .done {
+    flex-wrap: wrap;
   }
 }
 @media (pointer: coarse) {
